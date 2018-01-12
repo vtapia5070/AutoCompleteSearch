@@ -1,0 +1,58 @@
+Input:
+    - Search string
+Output:
+    - string suggestions?
+
+API ex:
+https://api.viki.io/v4/search.json?c=boys&per_page=5&with_people=true&app=100266a&t=1440586215
+
+Api:
+https://api.viki.io/v4/search.json
+
+Query Params:
+c: <search string>
+per_page: 5
+with_people: bool flag to include celebrity items
+app: 100266a
+t: timestamp number
+
+Response Obj (useful):
+id:
+t: type of item
+    => 'series'
+tt: title (English)
+    => 'Boys Over Flowers'
+te: title (spanish)
+tj: title (Japanese)
+tf: title (Frnech)
+u: url Obj {w: path, a: api url}
+i: image
+    => "http://0.viki.io/c/ed0/16e/06d/boys­over­flowers_590x330.jpg?x=b"
+e: # episodes (for series)
+oc: Origin Country
+    => 'kr'
+
+*** Edge cases
+- What if we type special characters or numbers?
+- What if the api returns an empty list? ex: str = ']'
+
+MVP TODO:
+- Get search string from input element value.
+    - How often do we want to fire an event?
+        - If this is something like Hulu, let's request every letter typed.
+
+- Create event listener
+    - Make a request to the api to get items
+
+- Render list items from api
+    - use title
+
+Post MVC:
+    - each list has an image (thumbnail?)
+    - description on hover?
+    - Add logic for languages
+    - Optimizations:
+        - Will we need a reconciliation method to remove some items as we type?
+        - Will we need to order the item suggestions?
+        - Can we assume the 5 suggestions will always be the same from the api,
+            given the same search string?
