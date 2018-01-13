@@ -3,6 +3,7 @@
  */
 
 let inputEl;
+let suggestionsContainerEl;
 
 const init = () => {
 
@@ -17,41 +18,51 @@ const init = () => {
 const addAssignments = () => {
 
     inputEl = document.querySelector('.searchInput');
+    suggestionsContainerEl = document.querySelector('.suggestions');
 
 };
 
-const suggestionStore = {};
 
 const createSuggestionItem = (suggestion) => {
 
     const suggestionItemEl = document.createElement('li');
+    suggestionItemEl.className = `suggestion_item ${suggestion.id}`;
+
+    const itemContainerEl = document.createElement('div');
+    itemContainerEl.className = 'item_container';
+
+    const thumbnailEl = document.createElement('img');
+    thumbnailEl.src = suggestion.i;
+
+    const titleEl = document.createElement('div');
+    titleEl.className = 'title';
+    titleEl.innerText = suggestion.tt;
 
     // use key for reference to items so we don't have to rerender dom
-    suggestionItemEl.className = `suggestionItem ${suggestion.id}`;
-    suggestionItemEl.innerText = suggestion.tt;
+    suggestionItemEl.appendChild(thumbnailEl);
+    suggestionItemEl.appendChild(titleEl);
 
     return suggestionItemEl;
 };
 
 const createSuggestionsList = (list) => {
-    const newStore = {};
+
     const listContainerEl = document.createElement('ul');
+
     listContainerEl.className = 'suggestions__list';
 
     list.forEach((item) => {
-        if (suggestionStore[item.id] === undefined) {
-            suggestionStore[item.id] = item;
-            listContainerEl.appendChild(createSuggestionItem(item));
-        }
+        listContainerEl.appendChild(createSuggestionItem(item));
     });
 
-    document.body.appendChild(listContainerEl);
+    suggestionsContainerEl.innerHTML = ``;
+    suggestionsContainerEl.appendChild(listContainerEl);
 
 };
 
 /**
  * Request search suggestions.
- * @param {*} e - event
+ * @param {object} e - event
  */
 const getSearchSuggestions = (e) => {
 
@@ -73,8 +84,6 @@ const getSearchSuggestions = (e) => {
         createSuggestionsList(data);
 
     });
-
-    console.log('searching!', `${ endpoint }${ params }`);
 
 };
 

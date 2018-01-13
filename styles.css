@@ -1,0 +1,19 @@
+body {
+    background: linear-gradient(to left bottom, #6fa1e1, #afcdf369 100%);
+}
+
+.search-container {
+    margin: 20% auto;
+    width: 300px;
+    height: 50px;
+}
+
+input {
+    height: 100%;
+    width: 100%;
+}
+
+img {
+    height: auto;
+    width: 130px;
+}
