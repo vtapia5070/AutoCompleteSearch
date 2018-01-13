@@ -5,16 +5,35 @@
 
     <body>
 
-        <div class="search-container">
-            <input
-                class="searchInput"
-                type="text"
-                placeholder="Search"
-            >
-        </div>
+        <header>
+            <label>Select your location:</label>
+            <select class="country-select">
+                <option value="us">United States</option>
+                <option value="kr">Korea</option>
+                <option value="jp">Japan</option>
+                <option value="mx">Mexico</option>
+                <option value="fr">France</option>
+                <option value="br">Brazil</option>
+                <option value="tzt">China</option>
+            </select>
+        </header>
 
-        <div class="suggestions"></div>
+        <section>
+            <div class="search-container">
+                <h1>Search for an item here</h1>
+                <input
+                    class="search-input"
+                    type="text"
+                    placeholder="Search"
+                >
+            </div>
+        </section>
 
-        <script src="script.js"></script>
+        <section>
+            <div class="suggestions"></div>
+        </section>
+
+        <script src="scripts/Suggestion.js"></script>
+        <script src="scripts/App.js"></script>
     </body>
 </html>
