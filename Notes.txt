@@ -47,7 +47,7 @@ MVP TODO:
 - Render list items from api
     - use title
 
-Post MVC:
+Post MVP:
     - each list has an image (thumbnail?)
     - description on hover?
     - Add logic for languages

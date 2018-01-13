@@ -9,9 +9,9 @@ const locationStore = {
     'in': 'India',
     'jp': 'Japan',
     'gb': 'United Kingdom',
-    'kr': 'Korea', // korean
+    'kr': 'Korea',
     'tw': 'Taiwan',
-    'jp': 'Japan' // Japanese
+    'jp': 'Japan'
 };
 
 class SuggestionItem {

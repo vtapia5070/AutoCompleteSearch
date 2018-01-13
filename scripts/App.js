@@ -129,15 +129,3 @@ const addEventListeners = () => {
 };
 
 init();
-
-/**
- *
- * Viki has a simple autocomplete api. Example:
-https://api.viki.io/v4/search.json?c=boys&per_page=5&with_people=true&app=100266a&t=1440586215
-With the following params:
-c​: The search string
-per_page​: number of results to return, keep the value at “5”
-with_people​: Flag to indicate search result to include celebrity items
-app​: ID of application making the call. Keep the value as “100266a“
-t​: Timestamp
- */
