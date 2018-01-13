@@ -2,17 +2,35 @@
  * Class to create an suggestion instance for the
  * autocomplete list.
  */
+
+// Global storage for Person suggestions location
+const locationStore = {
+    'id': 'Indonesia',
+    'in': 'India',
+    'jp': 'Japan',
+    'gb': 'United Kingdom',
+    'kr': 'Korea', // korean
+    'tw': 'Taiwan',
+    'jp': 'Japan' // Japanese
+};
+
 class SuggestionItem {
 
     constructor(suggestionObj) {
-        this.id = suggestionObj.id;
-        this.isSeries = suggestionObj.t === 'series';
-        this.imageURL = suggestionObj.i;
-        this.title = suggestionObj.tt; // TODO get language from global scope
 
-        if (this.isSeries) {
-            this.episodes = suggestionObj.e;
-        }
+        this.id = suggestionObj.id;
+        this.type = suggestionObj.t;
+        this.imageURL = suggestionObj.i;
+
+        // For series suggestion types
+        this.episodes = suggestionObj.e || 0;
+
+        // For person suggestion types
+        this.location = locationStore[suggestionObj.oc] || locationStore['us'];
+
+        // Use selected country language for title if it exists.
+        this.title = suggestionObj[language] || suggestionObj.tt;
+
     }
 
     /**
@@ -35,7 +53,7 @@ class SuggestionItem {
 
         // Create Container Element
         const infoContainerEl = document.createElement('div');
-        infoContainerEl.className = 'item_info';
+        infoContainerEl.className = 'item-info';
 
         // Create and append title to container
         const titleEl = document.createElement('div');
@@ -43,12 +61,19 @@ class SuggestionItem {
         titleEl.innerText = this.title;
         infoContainerEl.appendChild(titleEl);
 
-        // if item is a series, append episode num to container
-        if (this.title === "series") {
-            const episodeNumEl = document.createElement('div');
-            episodeNumEl.innerText = this.episodes;
-            infoContainerEl.appendChild(episodeNumEl);
+        // create elements based on type.
+        switch (this.type) {
+            case 'series':
+                const episodeNumEl = document.createElement('div');
+                episodeNumEl.innerText = `Episodes: ${this.episodes}`;
+                infoContainerEl.appendChild(episodeNumEl);
+                break;
+            case 'person':
+                const locationEl = document.createElement('div');
+                locationEl.innerText = `Origin: ${this.location}`;
+                infoContainerEl.appendChild(locationEl);
         }
+
 
         return infoContainerEl;
     }
@@ -59,12 +84,12 @@ class SuggestionItem {
     createListItem() {
 
         // Create list item tag
-        const suggestionItemEl = document.createElement('li');
-        suggestionItemEl.className = `suggestion_item ${this.id}`;
+        const suggestionItemEl = document.createElement('div');
+        suggestionItemEl.className = `suggestion-item ${this.id}`;
 
         // Create item Container div
         const itemContainerEl = document.createElement('div');
-        itemContainerEl.className = 'item_container';
+        itemContainerEl.className = 'item-container';
 
         // append image
         itemContainerEl.appendChild(this.createImageEl());

@@ -3,7 +3,10 @@
  */
 
 let inputEl;
+let selectEl;
 let suggestionsContainerEl;
+let language;
+let languageStore;
 
 const init = () => {
 
@@ -17,17 +20,54 @@ const init = () => {
  */
 const addAssignments = () => {
 
-    inputEl = document.querySelector('.searchInput');
+    inputEl = document.querySelector('.search-input');
+    selectEl = document.querySelector('.country-select');
     suggestionsContainerEl = document.querySelector('.suggestions');
+
+    // for seriese suggestions if user picks a language,
+    // default to english.
+    languageStore = {
+        'kr': 'ko', // korean
+        'jp': 'tj', // Japanese
+        'mx': 'te', // spanish
+        'fr': 'tf', // french
+        'br': 'pt', // potugese
+        'us': 'tt', // US
+        'cn': 'tzt' // 'China'
+
+    };
+
+    // default language
+    language = languageStore['us'];
 
 };
 
 
+
 const createSuggestionsList = (list) => {
 
-    const listContainerEl = document.createElement('ul');
+    // Empty DOM
+    suggestionsContainerEl.innerHTML = '';
 
-    listContainerEl.className = 'suggestions__list';
+    // Don't render anything if user empties input.
+    if (list === null) {
+        return;
+    }
+
+    // Notify user of failed suggestions.
+    if (list.length <= 0) {
+
+        const headerNoticeEl = document.createElement('h1');
+        headerNoticeEl.className = 'notice';
+        headerNoticeEl.innerText = 'We couldn\'t find any items related to your search, try another item!';
+        suggestionsContainerEl.appendChild(headerNoticeEl);
+
+        return;
+    }
+
+    const listContainerEl = document.createElement('div');
+
+    listContainerEl.className = 'suggestions-list';
 
     list.forEach((item) => {
 
@@ -37,17 +77,21 @@ const createSuggestionsList = (list) => {
 
     });
 
-    suggestionsContainerEl.innerHTML = '';
     suggestionsContainerEl.appendChild(listContainerEl);
 
 };
 
 
 /**
- * Request search suggestions.
+ * Request search suggestions from endpoint when user types.
  * @param {object} e - event
  */
 const getSearchSuggestions = (e) => {
+    if (e.target.value === '') {
+
+        createSuggestionsList(null);
+        return;
+    }
 
     const searchStr = `c=${e.target.value}`;
     const timestamp = Date.now() / 1000 | 0;
@@ -64,19 +108,23 @@ const getSearchSuggestions = (e) => {
 
     }).then((data) => {
 
-        if (data.length <= 0) {
-            // TODO Create dom element for empty results
-        } else {
-            createSuggestionsList(data);
-        }
+        createSuggestionsList(data);
 
     });
 
 };
 
+/**
+ * Set Global language for suggestions.
+ */
+const setLanguage = (e) => {
+    language = languageStore[e.target.value];
+};
+
 const addEventListeners = () => {
 
     inputEl.onkeyup = getSearchSuggestions;
+    selectEl.onchange = setLanguage;
 
 };
 
